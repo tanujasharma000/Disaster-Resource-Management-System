@@ -44,13 +44,14 @@ Disaster-Resource-Management-System/
 │
 ├── app.py
 ├── requirements.txt
-├── README.md
+├── config.py
+├── models.py
 │
 ├── templates/
 │   ├── index.html
 │   ├── login.html
 │   ├── dashboard.html
-│   └── verify_requests.html
+│   └── verify_requests.html...other html files
 │
 ├── static/
 │   ├── css/
