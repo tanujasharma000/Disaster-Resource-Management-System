@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Add Disaster - DRMS{% endblock %}
+{% block content %}
+<h2>Add New Disaster</h2>
+<form method="post">
+    <table>
+        <tr>
+            <td>Disaster Name *</td>
+            <td><input type="text" name="name" required maxlength="100" placeholder="e.g. Kerala Floods 2025"></td>
+        </tr>
+        <tr>
+            <td>Location *</td>
+            <td><input type="text" name="location" required maxlength="255" placeholder="State / District / City"></td>
+        </tr>
+        <tr>
+            <td>Date Occurred *</td>
+            <td><input type="date" name="date_occurred" required></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="description" rows="4" cols="40" placeholder="Brief description of the disaster"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Add Disaster"></td>
+        </tr>
+    </table>
+</form>
+<p><a href="{{ url_for('manage_disasters') }}">&larr; Back to Manage Disasters</a></p>
+{% endblock %}
