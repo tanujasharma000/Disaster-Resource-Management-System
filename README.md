@@ -54,11 +54,7 @@ Disaster-Resource-Management-System/
 │
 ├── static/
 │   ├── css/
-│   ├── js/
-│   └── images/
-│
-├── database/
-│   └── database.db
+
 ```
 
 ---
