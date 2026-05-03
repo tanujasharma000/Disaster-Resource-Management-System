@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Gap Analysis - DRMS{% endblock %}
+{% block content %}
+<h2>Demand-Supply Gap Analysis</h2>
+<p>Shows the difference between what is needed (verified requests) and what is available (verified donations) for each resource type.</p>
+
+{% if gaps %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Resource</th>
+            <th>Total Needed (Unfulfilled)</th>
+            <th>Total Available (Unallocated)</th>
+            <th>Gap (Needed - Available)</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for g in gaps %}
+        {% set available = g.total_available if g.total_available else 0 %}
+        {% set gap = g.total_requested - available %}
+        <tr>
+            <td>{{ g.resource_name }}</td>
+            <td align="center">{{ g.total_requested }}</td>
+            <td align="center">{{ available }}</td>
+            <td align="center">{{ gap }}</td>
+            <td>
+                {% if gap > 0 %}
+                    SHORTAGE (need {{ gap }} more)
+                {% elif gap < 0 %}
+                    SURPLUS ({{ (gap * -1) }} extra available)
+                {% else %}
+                    BALANCED
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No gap data available. There may be no verified, unfulfilled requests at this time.</p>
+{% endif %}
+
+<p><a href="{{ url_for('admin_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}

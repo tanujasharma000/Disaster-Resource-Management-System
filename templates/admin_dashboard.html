@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - DRMS{% endblock %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<p>Welcome, {{ session.name }}!</p>
+
+<h3>System Overview</h3>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Active Disasters</th>
+        <th>Donors</th>
+        <th>Seekers</th>
+        <th>Pending Donations</th>
+        <th>Pending Requests</th>
+        <th>Verified Donations</th>
+        <th>Verified Requests</th>
+        <th>Allocations Made</th>
+    </tr>
+    <tr>
+        <td align="center">{{ stats.active_disasters }}</td>
+        <td align="center">{{ stats.donors }}</td>
+        <td align="center">{{ stats.seekers }}</td>
+        <td align="center">{{ stats.pending_donations }}</td>
+        <td align="center">{{ stats.pending_requests }}</td>
+        <td align="center">{{ stats.verified_donations }}</td>
+        <td align="center">{{ stats.verified_requests }}</td>
+        <td align="center">{{ stats.allocations }}</td>
+    </tr>
+</table>
+
+<h3>Admin Actions</h3>
+<ul>
+    <li><a href="{{ url_for('manage_disasters') }}">Manage Disasters</a> &mdash; Add or deactivate disasters</li>
+    <li><a href="{{ url_for('verify_donations') }}">Verify Donations</a>
+        {% if stats.pending_donations > 0 %}({{ stats.pending_donations }} pending){% endif %}
+    </li>
+    <li><a href="{{ url_for('verify_requests') }}">Verify Requests</a>
+        {% if stats.pending_requests > 0 %}({{ stats.pending_requests }} pending){% endif %}
+    </li>
+    <li><a href="{{ url_for('gap_analysis') }}">View Demand-Supply Gap Analysis</a></li>
+    <li>
+        <form method="post" action="{{ url_for('match_resources') }}" style="display:inline;">
+            <input type="submit" value="Run Resource Matching"
+                onclick="return confirm('Run matching algorithm? This will create new allocations.')">
+        </form>
+        &mdash; Automatically match verified donations to verified requests
+    </li>
+    <li><a href="{{ url_for('view_allocations') }}">View All Allocations</a></li>
+</ul>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Verify Requests - DRMS{% endblock %}
+{% block content %}
+<h2>Pending Requests</h2>
+<p><em>Sorted by urgency: high priority requests appear first.</em></p>
+
+{% if requests %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Seeker</th>
+            <th>Disaster</th>
+            <th>Resource</th>
+            <th>Quantity</th>
+            <th>Urgency</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Submitted</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in requests %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.seeker_name }}</td>
+            <td>{{ r.disaster_name if r.disaster_name else 'N/A' }}</td>
+            <td>{{ r.resource_name }}</td>
+            <td>{{ r.quantity }}</td>
+            <td><strong>{{ r.urgency | upper }}</strong></td>
+            <td>{{ r.location }}</td>
+            <td>{{ r.description if r.description else '-' }}</td>
+            <td>{{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '' }}</td>
+            <td>
+                <form method="post" action="{{ url_for('verify_request', request_id=r.id) }}" style="display:inline;">
+                    <input type="hidden" name="action" value="verify">
+                    <input type="submit" value="Verify">
+                </form>
+                <form method="post" action="{{ url_for('verify_request', request_id=r.id) }}" style="display:inline;">
+                    <input type="hidden" name="action" value="reject">
+                    <input type="submit" value="Reject"
+                        onclick="return confirm('Reject this request?')">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No pending requests. All caught up!</p>
+{% endif %}
+
+<p><a href="{{ url_for('admin_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Verify Donations - DRMS{% endblock %}
+{% block content %}
+<h2>Pending Donations</h2>
+
+{% if donations %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Donor</th>
+            <th>Disaster</th>
+            <th>Resource</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Submitted</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in donations %}
+        <tr>
+            <td>{{ d.id }}</td>
+            <td>{{ d.donor_name }}</td>
+            <td>{{ d.disaster_name if d.disaster_name else 'N/A' }}</td>
+            <td>{{ d.resource_name }}</td>
+            <td>{{ d.quantity }}</td>
+            <td>{{ d.location }}</td>
+            <td>{{ d.description if d.description else '-' }}</td>
+            <td>{{ d.created_at.strftime('%Y-%m-%d') if d.created_at else '' }}</td>
+            <td>
+                <form method="post" action="{{ url_for('verify_donation', donation_id=d.id) }}" style="display:inline;">
+                    <input type="hidden" name="action" value="verify">
+                    <input type="submit" value="Verify">
+                </form>
+                <form method="post" action="{{ url_for('verify_donation', donation_id=d.id) }}" style="display:inline;">
+                    <input type="hidden" name="action" value="reject">
+                    <input type="submit" value="Reject"
+                        onclick="return confirm('Reject this donation?')">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No pending donations. All caught up!</p>
+{% endif %}
+
+<p><a href="{{ url_for('admin_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Donor Dashboard - DRMS{% endblock %}
+{% block content %}
+<h2>Donor Dashboard</h2>
+<p>Welcome, {{ session.name }}!</p>
+<p><a href="{{ url_for('add_donation') }}">+ Add New Donation</a></p>
+
+<h3>Your Donations</h3>
+{% if donations %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>#</th><th>Disaster</th><th>Resource</th><th>Quantity</th>
+            <th>Allocated</th><th>Location</th><th>Status</th><th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in donations %}
+        <tr>
+            <td>{{ d.id }}</td>
+            <td>{{ d.disaster_name if d.disaster_name else 'N/A' }}</td>
+            <td>{{ d.resource_name }}</td>
+            <td>{{ d.quantity }}</td>
+            <td>{{ d.allocated_quantity }}</td>
+            <td>{{ d.location }}</td>
+            <td>{{ d.status }}</td>
+            <td>{{ d.created_at.strftime('%Y-%m-%d') if d.created_at else '' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You have not made any donations yet.</p>
+{% endif %}
+
+<hr>
+
+<h3>Your Matched Seekers</h3>
+<p>These people have been matched with your donations. Contact them to arrange handover.</p>
+{% if allocations %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Resource</th><th>Qty Allocated</th><th>Urgency</th>
+            <th>Delivery Location</th><th>Seeker Name</th>
+            <th>Seeker Phone</th><th>Seeker Location</th><th>Date Matched</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in allocations %}
+        <tr>
+            <td>{{ a.resource_name }}</td>
+            <td align="center">{{ a.allocated_quantity }}</td>
+            <td><strong>{{ a.urgency | upper }}</strong></td>
+            <td>{{ a.request_location }}</td>
+            <td>{{ a.seeker_name }}</td>
+            <td>{{ a.seeker_phone if a.seeker_phone else 'Not provided' }}</td>
+            <td>{{ a.seeker_location }}</td>
+            <td>{{ a.created_at.strftime('%Y-%m-%d') if a.created_at else '' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No matches yet. Matches are created by the admin after your donations are verified.</p>
+{% endif %}
+{% endblock %}

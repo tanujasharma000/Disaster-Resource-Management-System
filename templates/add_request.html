@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Add Request - DRMS{% endblock %}
+{% block content %}
+<h2>Submit a Resource Request</h2>
+
+{% if not disasters %}
+<p>There are no active disasters registered. Please contact an admin.</p>
+{% else %}
+<form method="post">
+    <table>
+        <tr>
+            <td>Disaster *</td>
+            <td>
+                <select name="disaster_id" required>
+                    {% for d in disasters %}
+                    <option value="{{ d.id }}">{{ d.name }} &mdash; {{ d.location }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Resource Name *</td>
+            <td><input type="text" name="resource_name" required maxlength="100" placeholder="e.g. Water, Food, Medicines"></td>
+        </tr>
+        <tr>
+            <td>Quantity Needed *</td>
+            <td><input type="number" name="quantity" required min="1" placeholder="e.g. 20"></td>
+        </tr>
+        <tr>
+            <td>Urgency *</td>
+            <td>
+                <select name="urgency" required>
+                    <option value="high">High &mdash; Life-threatening, needed immediately</option>
+                    <option value="medium" selected>Medium &mdash; Needed soon</option>
+                    <option value="low">Low &mdash; Can wait a few days</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Delivery Location *</td>
+            <td><input type="text" name="location" required maxlength="255" placeholder="City / District where you need resources"></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="description" rows="3" cols="40" placeholder="Extra details about your situation (optional)"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Submit Request"></td>
+        </tr>
+    </table>
+</form>
+{% endif %}
+
+<p><a href="{{ url_for('seeker_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}

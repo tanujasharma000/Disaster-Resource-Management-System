@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Manage Disasters - DRMS{% endblock %}
+{% block content %}
+<h2>Manage Disasters</h2>
+<p><a href="{{ url_for('add_disaster') }}">+ Add New Disaster</a></p>
+
+{% if disasters %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in disasters %}
+        <tr>
+            <td>{{ d.id }}</td>
+            <td>{{ d.name }}</td>
+            <td>{{ d.location }}</td>
+            <td>{{ d.date_occurred if d.date_occurred else 'N/A' }}</td>
+            <td>{{ d.status }}</td>
+            <td>
+                <form method="post" action="{{ url_for('toggle_disaster', disaster_id=d.id) }}" style="display:inline;">
+                    {% if d.status == 'active' %}
+                        <input type="hidden" name="status" value="inactive">
+                        <input type="submit" value="Deactivate">
+                    {% else %}
+                        <input type="hidden" name="status" value="active">
+                        <input type="submit" value="Reactivate">
+                    {% endif %}
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No disasters have been added yet.</p>
+{% endif %}
+
+<p><a href="{{ url_for('admin_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}

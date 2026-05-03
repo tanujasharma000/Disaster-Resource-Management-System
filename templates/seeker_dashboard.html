@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Seeker Dashboard - DRMS{% endblock %}
+{% block content %}
+<h2>Seeker Dashboard</h2>
+<p>Welcome, {{ session.name }}!</p>
+<p><a href="{{ url_for('add_request') }}">+ Add New Request</a></p>
+
+<h3>Your Requests</h3>
+{% if requests %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>#</th><th>Disaster</th><th>Resource</th><th>Requested</th>
+            <th>Fulfilled</th><th>Urgency</th><th>Location</th><th>Status</th><th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in requests %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.disaster_name if r.disaster_name else 'N/A' }}</td>
+            <td>{{ r.resource_name }}</td>
+            <td>{{ r.quantity }}</td>
+            <td>{{ r.fulfilled_quantity }}</td>
+            <td>{{ r.urgency }}</td>
+            <td>{{ r.location }}</td>
+            <td>{{ r.status }}</td>
+            <td>{{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You have not submitted any requests yet.</p>
+{% endif %}
+
+<hr>
+
+<h3>Your Matched Donors</h3>
+<p>These donors have been matched to your requests. Contact them to collect your resources.</p>
+{% if allocations %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Resource</th><th>Qty Allocated</th><th>Urgency</th>
+            <th>Your Location</th><th>Donor Name</th>
+            <th>Donor Phone</th><th>Donor Location</th><th>Date Matched</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in allocations %}
+        <tr>
+            <td>{{ a.resource_name }}</td>
+            <td align="center">{{ a.allocated_quantity }}</td>
+            <td><strong>{{ a.urgency | upper }}</strong></td>
+            <td>{{ a.request_location }}</td>
+            <td>{{ a.donor_name }}</td>
+            <td>{{ a.donor_phone if a.donor_phone else 'Not provided' }}</td>
+            <td>{{ a.donor_location }}</td>
+            <td>{{ a.created_at.strftime('%Y-%m-%d') if a.created_at else '' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No matches yet. Once the admin verifies your request and runs matching, donor details will appear here.</p>
+{% endif %}
+{% endblock %}

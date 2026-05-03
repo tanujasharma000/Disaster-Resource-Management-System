@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Add Donation - DRMS{% endblock %}
+{% block content %}
+<h2>Add a Donation</h2>
+
+{% if not disasters %}
+<p>There are no active disasters to donate for at this time. Please check back later.</p>
+{% else %}
+<form method="post">
+    <table>
+        <tr>
+            <td>Disaster *</td>
+            <td>
+                <select name="disaster_id" required>
+                    {% for d in disasters %}
+                    <option value="{{ d.id }}">{{ d.name }} &mdash; {{ d.location }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Resource Name *</td>
+            <td><input type="text" name="resource_name" required maxlength="100" placeholder="e.g. Water, Food, Blankets"></td>
+        </tr>
+        <tr>
+            <td>Quantity *</td>
+            <td><input type="number" name="quantity" required min="1" placeholder="e.g. 50"></td>
+        </tr>
+        <tr>
+            <td>Pickup Location *</td>
+            <td><input type="text" name="location" required maxlength="255" placeholder="City / District where resources are available"></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="description" rows="3" cols="40" placeholder="Any extra details (optional)"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Submit Donation"></td>
+        </tr>
+    </table>
+</form>
+{% endif %}
+
+<p><a href="{{ url_for('donor_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}

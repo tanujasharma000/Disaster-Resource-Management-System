@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Home - DRMS{% endblock %}
+{% block content %}
+<h2>Welcome to the Disaster Resource Management System</h2>
+<p>Connecting donors and seekers during emergencies. Fast, transparent, and efficient resource distribution.</p>
+
+{% if not session.user_id %}
+<p>
+    <a href="{{ url_for('register') }}">Register</a> |
+    <a href="{{ url_for('login') }}">Login</a>
+</p>
+{% endif %}
+
+<h3>Active Disasters</h3>
+{% if disasters %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Disaster</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in disasters %}
+        <tr>
+            <td>{{ d.name }}</td>
+            <td>{{ d.location }}</td>
+            <td>{{ d.date_occurred if d.date_occurred else 'N/A' }}</td>
+            <td>{{ d.description if d.description else '-' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No active disasters at this time.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Register - DRMS{% endblock %}
+{% block content %}
+<h2>Create an Account</h2>
+<form method="post">
+    <table>
+        <tr>
+            <td>Full Name *</td>
+            <td><input type="text" name="name" required maxlength="100"></td>
+        </tr>
+        <tr>
+            <td>Email *</td>
+            <td><input type="email" name="email" required maxlength="100"></td>
+        </tr>
+        <tr>
+            <td>Password *</td>
+            <td><input type="password" name="password" required minlength="6"></td>
+        </tr>
+        <tr>
+            <td>Role *</td>
+            <td>
+                <select name="role" required>
+                    <option value="donor">Donor (I want to give resources)</option>
+                    <option value="seeker">Seeker (I need resources)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td><input type="text" name="phone" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td>Location *</td>
+            <td><input type="text" name="location" required maxlength="255" placeholder="City / District"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Register"></td>
+        </tr>
+    </table>
+</form>
+<p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Allocations - DRMS{% endblock %}
+{% block content %}
+<h2>All Resource Allocations</h2>
+<p>Full contact details of all matched donors and seekers.</p>
+
+{% if allocations %}
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>#</th><th>Resource</th><th>Qty</th><th>Urgency</th><th>Location</th>
+            <th>Donor Name</th><th>Donor Phone</th>
+            <th>Seeker Name</th><th>Seeker Phone</th>
+            <th>Status</th><th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in allocations %}
+        <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.resource_name }}</td>
+            <td align="center">{{ a.allocated_quantity }}</td>
+            <td>{{ a.urgency }}</td>
+            <td>{{ a.request_location }}</td>
+            <td>{{ a.donor_name }}</td>
+            <td>{{ a.donor_phone if a.donor_phone else 'N/A' }}</td>
+            <td>{{ a.seeker_name }}</td>
+            <td>{{ a.seeker_phone if a.seeker_phone else 'N/A' }}</td>
+            <td>{{ a.status }}</td>
+            <td>{{ a.created_at.strftime('%Y-%m-%d') if a.created_at else '' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No allocations have been made yet. Run resource matching from the admin dashboard.</p>
+{% endif %}
+
+<p><a href="{{ url_for('admin_dashboard') }}">&larr; Back to Dashboard</a></p>
+{% endblock %}
